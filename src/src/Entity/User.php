@@ -17,12 +17,12 @@ class User
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $username = null;
+    private ?string $userName = null;
 
     #[ORM\Column]
     private ?bool $isAdmin = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $creationDate = null;
 
     #[ORM\Column(length: 255)]
@@ -34,7 +34,7 @@ class User
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $phone = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Advert::class)]
+    #[ORM\OneToMany(mappedBy: 'userId', targetEntity: Advert::class)]
     private Collection $adverts;
 
     public function __construct()
@@ -47,14 +47,26 @@ class User
         return $this->id;
     }
 
-    public function getUsername(): ?string
+    public function getUserName(): ?string
     {
-        return $this->username;
+        return $this->userName;
     }
 
-    public function setUsername(string $username): self
+    public function setUserName(string $userName): self
     {
-        $this->username = $username;
+        $this->userName = $userName;
+
+        return $this;
+    }
+
+    public function isIsAdmin(): ?bool
+    {
+        return $this->isAdmin;
+    }
+
+    public function setIsAdmin(bool $isAdmin): self
+    {
+        $this->isAdmin = $isAdmin;
 
         return $this;
     }
@@ -119,7 +131,7 @@ class User
     {
         if (!$this->adverts->contains($advert)) {
             $this->adverts->add($advert);
-            $advert->setUser($this);
+            $advert->setUserId($this);
         }
 
         return $this;
@@ -129,8 +141,8 @@ class User
     {
         if ($this->adverts->removeElement($advert)) {
             // set the owning side to null (unless already changed)
-            if ($advert->getUser() === $this) {
-                $advert->setUser(null);
+            if ($advert->getUserId() === $this) {
+                $advert->setUserId(null);
             }
         }
 
