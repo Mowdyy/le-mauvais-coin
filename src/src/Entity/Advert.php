@@ -37,20 +37,20 @@ class Advert
     #[ORM\Column(nullable: true)]
     private ?int $downvotes = null;
 
-    #[ORM\OneToMany(mappedBy: 'advert', targetEntity: Questions::class)]
-    private Collection $questions;
-
     #[ORM\ManyToOne(inversedBy: 'adverts')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
+    private ?User $userId = null;
 
-    #[ORM\ManyToMany(targetEntity: Tags::class, inversedBy: 'adverts')]
+    #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'adverts')]
     private Collection $tags;
+
+    #[ORM\OneToMany(mappedBy: 'advert', targetEntity: Question::class)]
+    private Collection $questions;
 
     public function __construct()
     {
-        $this->questions = new ArrayCollection();
         $this->tags = new ArrayCollection();
+        $this->questions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -142,15 +142,54 @@ class Advert
         return $this;
     }
 
+    public function getUserId(): ?User
+    {
+        return $this->userId;
+    }
+
+    public function setUserId(?User $userId): self
+    {
+        $this->userId = $userId;
+
+        return $this;
+    }
+
     /**
-     * @return Collection<int, Questions>
+     * @return Collection<int, Tag>
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(Tag $tag): self
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags->add($tag);
+            $tag->addAdvert($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTag(Tag $tag): self
+    {
+        if ($this->tags->removeElement($tag)) {
+            $tag->removeAdvert($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Question>
      */
     public function getQuestions(): Collection
     {
         return $this->questions;
     }
 
-    public function addQuestion(Questions $question): self
+    public function addQuestion(Question $question): self
     {
         if (!$this->questions->contains($question)) {
             $this->questions->add($question);
@@ -160,7 +199,7 @@ class Advert
         return $this;
     }
 
-    public function removeQuestion(Questions $question): self
+    public function removeQuestion(Question $question): self
     {
         if ($this->questions->removeElement($question)) {
             // set the owning side to null (unless already changed)
@@ -168,42 +207,6 @@ class Advert
                 $question->setAdvert(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Tags>
-     */
-    public function getTags(): Collection
-    {
-        return $this->tags;
-    }
-
-    public function addTag(Tags $tag): self
-    {
-        if (!$this->tags->contains($tag)) {
-            $this->tags->add($tag);
-        }
-
-        return $this;
-    }
-
-    public function removeTag(Tags $tag): self
-    {
-        $this->tags->removeElement($tag);
 
         return $this;
     }
