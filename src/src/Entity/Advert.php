@@ -51,6 +51,9 @@ class Advert
     {
         $this->tags = new ArrayCollection();
         $this->questions = new ArrayCollection();
+        $this->createdAt = new \DateTime();
+        $this->setSlug();
+        $this->setUserId();
     }
 
     public function getId(): ?int
@@ -111,11 +114,9 @@ class Advert
         return $this->slug;
     }
 
-    public function setSlug(string $slug): self
+    public function setSlug()
     {
-        $this->slug = $slug;
-
-        return $this;
+        return $this->slug = 'advert';
     }
 
     public function getUpvotes(): ?int

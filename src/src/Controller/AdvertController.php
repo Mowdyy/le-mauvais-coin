@@ -2,8 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Advert;
+use App\Form\AdvertType;
 use App\Repository\AdvertRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -22,9 +26,20 @@ class AdvertController extends AbstractController
         }
     }
 
-    #[Route('/advert')]
-    public function redirectToHome()
+    #[Route('/advert', name: 'app_add_advert', methods: ['GET', 'POST'])]
+    public function addAdvert(Request $request, EntityManagerInterface $entityManagerInterface): Response
     {
-        return $this->redirectToRoute('app_home');
+        $advert = new Advert();
+        $form = $this->createForm(AdvertType::class, $advert);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $advert = $form->getData();
+            $entityManagerInterface->persist($advert);
+            $entityManagerInterface->flush();
+            return $this->redirectToRoute('app_home');
+        }
+        return $this->render('advert/addAdvert.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 }

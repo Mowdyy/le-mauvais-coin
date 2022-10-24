@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ advert.title }}{% endblock %}
+{% block title %}Ajouter une annonce{% endblock %}
 
 {% block body %}
 <style>
@@ -9,6 +9,6 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>{{ advert.title }}! ✅</h1>
+    {{ form(form) }}
 </div>
 {% endblock %}
