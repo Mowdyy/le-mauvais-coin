@@ -20,7 +20,11 @@ services:
     volumes:
       - db-data:/var/lib/mysql
     environment:
+<<<<<<< HEAD
       MYSQL_ROOT_PASSWORD: "ChangeMeLater"
+=======
+      MYSQL_ROOT_PASSWORD: "password"
+>>>>>>> develop
     networks:
       - acpSymfony
 
