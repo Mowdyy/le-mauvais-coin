@@ -16,11 +16,9 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         
-        UserFactory::createMany(25);
         TagFactory::createMany(40);
         AdvertFactory::createMany(10, function(){
-            return ['userId'=> UserFactory::random(), 
-                    'tags' => [TagFactory::random()]];
+            return [ 'tags' => [TagFactory::random()]];
         });
         Questionfactory::createMany(1,function(){
             return ['advert'=> AdvertFactory::first()];
