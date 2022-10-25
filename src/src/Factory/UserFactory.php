@@ -40,7 +40,7 @@ final class UserFactory extends ModelFactory
     {
         return [
             // TODO add your default values here (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories)
-            'userName' => self::faker()->text(),
+            'userName' => self::faker()->name(),
             'isAdmin' => self::faker()->boolean(),
             'creationDate' => self::faker()->dateTime(), // TODO add DATETIME ORM type manually
             'city' => self::faker()->text(),
