@@ -14,9 +14,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdvertController extends AbstractController
 {
     #[Route('/advert/{id}', name: 'app_advert')]
-    public function findAdvertById($id, AdvertRepository $AdvertRepository): Response
+    public function findAdvertById($id, AdvertRepository $advertRepository): Response
     {
-        $advert = $AdvertRepository->findOneById($id);
+        $advert = $advertRepository->findOneById($id);
         if (!$advert) {
             throw $this->createNotFoundException("L'annonce que vous recherchez n'existe pas :'(");
         } else {
@@ -41,5 +41,13 @@ class AdvertController extends AbstractController
         return $this->render('advert/addAdvert.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    #[Route('/advert/{id}/delete', name: 'app_delete_advert', methods: ['GET', 'POST'])]
+    public function deleteAdvert($id, AdvertRepository $advertRepository) 
+    {
+        $advert = $advertRepository->findOneById($id);
+        $advertRepository->remove($advert, true);
+        return $this->redirectToRoute('app_home');
     }
 }

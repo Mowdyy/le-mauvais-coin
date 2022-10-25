@@ -53,7 +53,7 @@ class Advert
         $this->questions = new ArrayCollection();
         $this->createdAt = new \DateTime();
         $this->setSlug();
-        $this->setUserId();
+        // $this->setUserId();
     }
 
     public function getId(): ?int
