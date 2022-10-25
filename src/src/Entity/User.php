@@ -157,6 +157,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+<<<<<<< HEAD
     public function getPassword(): ?string
     {
         return $this->password;
@@ -193,4 +194,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // 
     }
+=======
+    public function __toString()
+    {
+        return $this->userName;
+    }
+>>>>>>> develop
 }

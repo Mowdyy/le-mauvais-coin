@@ -23,6 +23,9 @@ class Question
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $answer = null;
 
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
 
     public function getId(): ?int
     {
@@ -64,4 +67,17 @@ class Question
 
         return $this;
     }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
 }
