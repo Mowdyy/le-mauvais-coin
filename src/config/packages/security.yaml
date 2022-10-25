@@ -7,8 +7,8 @@ security:
         users_in_memory: { memory: null }
         user:
             entity:
-                class: "App\Enity\User"
-                property: 'userName'
+                class: App\Entity\User
+                property: userName
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
