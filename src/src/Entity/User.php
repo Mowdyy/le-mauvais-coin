@@ -157,47 +157,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-<<<<<<< HEAD
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    public function getRoles(): array
-    {
-        $roles =  $this->roles;
-        $roles[] = "ROLE_USER";
-
-        return $roles;
-    }
-
-    public function setRoles(array $roles): self
-    {
-        $this->roles = $roles;
-
-        return $this;
-    }
-
-    public function getUserIdentifier(): string 
-    {
-        return $this->userName;
-    }
-
-    public function eraseCredentials()
-    {
-        // 
-    }
-=======
     public function __toString()
     {
         return $this->userName;
     }
->>>>>>> develop
 }
