@@ -4,11 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-<<<<<<< Updated upstream
-    "content-hash": "fa5110e8355c29794a9ada80b56fd753",
-=======
     "content-hash": "7e70e2ff0a724e3019b475821ab8216c",
->>>>>>> Stashed changes
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -3314,8 +3310,6 @@
         },
         {
             "name": "symfony/form",
-<<<<<<< Updated upstream
-=======
             "version": "v6.1.5",
             "source": {
                 "type": "git",
@@ -3418,7 +3412,6 @@
         },
         {
             "name": "symfony/framework-bundle",
->>>>>>> Stashed changes
             "version": "v6.1.5",
             "source": {
                 "type": "git",
@@ -4334,8 +4327,6 @@
         },
         {
             "name": "symfony/polyfill-intl-icu",
-<<<<<<< Updated upstream
-=======
             "version": "v1.26.0",
             "source": {
                 "type": "git",
@@ -4423,7 +4414,6 @@
         },
         {
             "name": "symfony/polyfill-intl-normalizer",
->>>>>>> Stashed changes
             "version": "v1.26.0",
             "source": {
                 "type": "git",
