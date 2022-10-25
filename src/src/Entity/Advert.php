@@ -37,15 +37,14 @@ class Advert
     #[ORM\Column(nullable: true)]
     private ?int $downvotes = null;
 
-    #[ORM\ManyToOne(inversedBy: 'adverts')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $userId = null;
-
     #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'adverts')]
     private Collection $tags;
 
     #[ORM\OneToMany(mappedBy: 'advert', targetEntity: Question::class)]
     private Collection $questions;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imageFileName = null;
 
     public function __construct()
     {
@@ -143,17 +142,7 @@ class Advert
         return $this;
     }
 
-    public function getUserId(): ?User
-    {
-        return $this->userId;
-    }
 
-    public function setUserId(?User $userId): self
-    {
-        $this->userId = $userId;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Tag>
@@ -208,6 +197,18 @@ class Advert
                 $question->setAdvert(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getImageFileName(): ?string
+    {
+        return $this->imageFileName;
+    }
+
+    public function setImageFileName(?string $imageFileName): self
+    {
+        $this->imageFileName = $imageFileName;
 
         return $this;
     }
