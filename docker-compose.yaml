@@ -1,19 +1,20 @@
-version: "3.8"
+version: '3.8'
 
 services:
-  alpine:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    restart: on-failure
-    ports:
-      - "5555:80"
-    volumes:
-      - ./conf/site.conf:/etc/nginx/http.d/default.conf
-      - ./src:/var/www/html
-    networks:
-      - acpSymfony
+    alpine:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        restart: on-failure
+        ports:
+            - "5555:80"
+        volumes:
+            - ./conf/site.conf:/etc/nginx/http.d/default.conf
+            - ./src:/var/www/html
+        networks:
+            - acpSymfony
 
+<<<<<<< HEAD
   db:
     image: mariadb:10.8.2
     restart: always
@@ -31,9 +32,20 @@ services:
 >>>>>>> refs/remotes/origin/log
     networks:
       - acpSymfony
+=======
+    db:
+        image: mariadb:10.8.2
+        restart: always
+        volumes:
+            - db-data:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: 'ChangeMeLater'
+        networks:
+            - acpSymfony
+>>>>>>> parent of ac7e320 (docker??)
 
 volumes:
-  db-data:
+    db-data:
 
 networks:
-  acpSymfony:
+    acpSymfony:
