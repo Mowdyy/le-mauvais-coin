@@ -44,7 +44,7 @@ final class AdvertFactory extends ModelFactory
             'description' => self::faker()->text(),
             'price' => self::faker()->randomNumber(),
             'createdAt' => self::faker()->dateTime(), // TODO add DATETIME ORM type manually
-            'slug' => self::faker()->text(),
+            // 'slug' => self::faker()->text(),
         ];
     }
 

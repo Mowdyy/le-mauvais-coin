@@ -47,6 +47,9 @@ class Advert
     #[ORM\OneToMany(mappedBy: 'advert', targetEntity: Question::class)]
     private Collection $questions;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imageFileName = null;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
@@ -208,6 +211,18 @@ class Advert
                 $question->setAdvert(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getImageFileName(): ?string
+    {
+        return $this->imageFileName;
+    }
+
+    public function setImageFileName(?string $imageFileName): self
+    {
+        $this->imageFileName = $imageFileName;
 
         return $this;
     }
