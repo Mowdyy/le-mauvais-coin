@@ -33,8 +33,6 @@ class AdvertController extends AbstractController
         $form = $this->createForm(AdvertType::class, $advert);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $product = new Product();
-            $form = $this->createForm(ProductType::class, $product);
             $form->handleRequest($request);
             $image = $form->get('image')->getData();
             
@@ -69,6 +67,19 @@ class AdvertController extends AbstractController
         return $this->render('advert/addAdvert.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    #[Route('/advert/{id}', name: 'app_advert_page')]
+    public function findAdvertById($id, AdvertRepository $advertRepository): Response
+    {
+        $advert = $advertRepository->findOneById($id);
+        if (!$advert) {
+            throw $this->createNotFoundException("L'annonce que vous recherchez n'existe pas :'(");
+        } else {
+            return $this->render('advert/index.html.twig', [
+                'advert' => $advert,
+            ]);
+        }
     }
     
     #[Route('/advert/{id}/delete', name: 'app_delete_advert', methods: ['GET', 'POST'])]
