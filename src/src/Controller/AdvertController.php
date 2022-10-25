@@ -25,14 +25,9 @@ class AdvertController extends AbstractController
             'adverts' => $adverts,
         ]);
     }
-<<<<<<< Updated upstream
-
-    #[Route('/advert/add', name: 'app_advert_add', methods: ['GET', 'POST'])]
-=======
     
-    #[Route('/advert', name: 'app_add_advert', methods: ['GET', 'POST'])]
->>>>>>> Stashed changes
-    public function addAdvert(Request $request, EntityManagerInterface $entityManagerInterface): Response
+    #[Route('/advert/add', name: 'app_add_advert', methods: ['GET', 'POST'])]
+    public function addAdvert(Request $request, EntityManagerInterface $entityManagerInterface, SluggerInterface $slugger): Response
     {
         $advert = new Advert();
         $form = $this->createForm(AdvertType::class, $advert);
@@ -75,26 +70,8 @@ class AdvertController extends AbstractController
             'form' => $form->createView()
         ]);
     }
-<<<<<<< Updated upstream
-
-    #[Route('/advert/{id}', name: 'app_advert_page')]
-    public function findAdvertById($id, AdvertRepository $advertRepository): Response
-    {
-        $advert = $advertRepository->findOneById($id);
-        if (!$advert) {
-            throw $this->createNotFoundException("L'annonce que vous recherchez n'existe pas :'(");
-        } else {
-            return $this->render('advert/index.html.twig', [
-                'advert' => $advert,
-            ]);
-        }
-    }
-
-    #[Route('/advert/{id}/delete', name: 'app_advert_delete', methods: ['GET', 'POST'])]
-=======
     
     #[Route('/advert/{id}/delete', name: 'app_delete_advert', methods: ['GET', 'POST'])]
->>>>>>> Stashed changes
     public function deleteAdvert($id, AdvertRepository $advertRepository) 
     {
         $advert = $advertRepository->findOneById($id);
