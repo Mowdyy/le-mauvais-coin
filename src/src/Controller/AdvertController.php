@@ -26,7 +26,7 @@ class AdvertController extends AbstractController
         ]);
     }
     
-    #[Route('/advert/add', name: 'app_add_advert', methods: ['GET', 'POST'])]
+    #[Route('/advert/add', name: 'app_advert_add', methods: ['GET', 'POST'])]
     public function addAdvert(Request $request, EntityManagerInterface $entityManagerInterface, SluggerInterface $slugger): Response
     {
         $advert = new Advert();
@@ -58,7 +58,7 @@ class AdvertController extends AbstractController
             
             // ... persist the $product variable or any other work
             
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_advert');
             $advert = $form->getData();
             $entityManagerInterface->persist($advert);
             $entityManagerInterface->flush();
@@ -82,7 +82,7 @@ class AdvertController extends AbstractController
         }
     }
     
-    #[Route('/advert/{id}/delete', name: 'app_delete_advert', methods: ['GET', 'POST'])]
+    #[Route('/advert/{id}/delete', name: 'app_advert_delete', methods: ['GET', 'POST'])]
     public function deleteAdvert($id, AdvertRepository $advertRepository) 
     {
         $advert = $advertRepository->findOneById($id);
