@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Advert;
+use App\Entity\Question;
 use App\Form\AdvertType;
+use App\Form\QuestionType;
 use App\Repository\AdvertRepository;
+use App\Repository\QuestionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -70,14 +73,26 @@ class AdvertController extends AbstractController
     }
 
     #[Route('/advert/{id}', name: 'app_advert_page')]
-    public function findAdvertById($id, AdvertRepository $advertRepository): Response
+    public function findAdvertById(EntityManagerInterface $entityManagerInterface,Request $request,$id, AdvertRepository $advertRepository): Response
     {
+        $question = new Question();
         $advert = $advertRepository->findOneById($id);
+        $questions = $advert->getQuestions();
+        $questionForm = $this->createForm(QuestionType::class, $question);
+        $questionForm->handleRequest($request);
+        if($questionForm->isSubmitted() && $questionForm->isValid()){
+            $question = $questionForm->getData();
+            $question->setAdvert($advert);
+            $entityManagerInterface->persist($question);
+            $entityManagerInterface->flush();
+        }
         if (!$advert) {
             throw $this->createNotFoundException("L'annonce que vous recherchez n'existe pas :'(");
         } else {
             return $this->render('advert/index.html.twig', [
                 'advert' => $advert,
+                'questions' => $questions,
+                'questionForm' => $questionForm->createView()
             ]);
         }
     }
