@@ -30,13 +30,12 @@ class AdvertController extends AbstractController
     }
     
     #[Route('/advert/add', name: 'app_advert_add', methods: ['GET', 'POST'])]
-    public function addAdvert(Request $request, EntityManagerInterface $entityManagerInterface, SluggerInterface $slugger): Response
+    public function addAdvert(Request $request, AdvertRepository $advertRepository, SluggerInterface $slugger): Response
     {
         $advert = new Advert();
         $form = $this->createForm(AdvertType::class, $advert);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $form->handleRequest($request);
             $image = $form->get('image')->getData();
             
             // this condition is needed because the 'brochure' field is not required
@@ -61,10 +60,9 @@ class AdvertController extends AbstractController
             
             // ... persist the $product variable or any other work
             
-            return $this->redirectToRoute('app_advert');
             $advert = $form->getData();
-            $entityManagerInterface->persist($advert);
-            $entityManagerInterface->flush();
+            $advertRepository->save($advert, true);
+
             return $this->redirectToRoute('app_advert');
         }
         return $this->render('advert/addAdvert.html.twig', [
