@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Advert;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * @extends ServiceEntityRepository<Advert>
@@ -37,6 +38,20 @@ class AdvertRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findMostPopular(string $search = null)
+    {
+        $queryBuilder = $this->createQueryBuilder('advert');
+        if ($search !== null) {
+            $queryBuilder
+            ->andWhere('advert.title LIKE :searchterm')
+            ->setParameter('searchterm', '%' . $search . '%');
+        }
+
+        dd($queryBuilder
+            ->getQuery()
+            ->getResult());
     }
 
 //    /**

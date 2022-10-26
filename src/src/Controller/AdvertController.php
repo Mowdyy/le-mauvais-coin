@@ -28,6 +28,17 @@ class AdvertController extends AbstractController
             'adverts' => $adverts,
         ]);
     }
+
+    #[Route('/advert/popular', name: 'app_advert_popular')]
+    public function mostPopular(AdvertRepository $advertRepository, Request $request)
+    {
+        $search = $request->request->get('q');
+        $popularAdverts = $advertRepository->findMostPopular($search);
+
+        return $this->render('home/index.html.twig', [
+            'adverts' => $popularAdverts
+        ]);
+    }
     
     #[Route('/advert/add', name: 'app_advert_add', methods: ['GET', 'POST'])]
     public function addAdvert(Request $request, AdvertRepository $advertRepository, SluggerInterface $slugger): Response

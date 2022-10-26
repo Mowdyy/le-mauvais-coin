@@ -13,8 +13,10 @@
     Toutes les annonces sont référencées ici:
     <ul>
         {% for advert in adverts %}
-        <li><a href="./advert/{{ advert.id }}">{{ advert.title }}</href></li>
-    {% endfor %}
+            <li><a href="./advert/{{ advert.id }}">{{ advert.title }}</href></li>
+        {% else %}
+            <p>Aucune annonce pour le moment...</p>
+        {% endfor %}
     </ul>
 </div>
 <div class="example-wrapper">
