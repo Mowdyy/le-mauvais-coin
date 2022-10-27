@@ -72,7 +72,7 @@ class AdvertController extends AbstractController
 
     #[Route('/advert/{id}', name: 'app_advert_page')]
     public function findAdvertById(EntityManagerInterface $entityManagerInterface,Request $request,$id, AdvertRepository $advertRepository): Response
-    {
+    { 
         $question = new Question();
         $advert = $advertRepository->findOneById($id);
         $questions = $advert->getQuestions();
