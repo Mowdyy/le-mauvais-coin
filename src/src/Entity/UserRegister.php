@@ -14,7 +14,6 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
 {
     public function __construct(){
         $this->setCreatedAt(new \DateTimeImmutable());
-        $this->setVotes(rand(-20, 50));
     }
 
     #[ORM\Id]
