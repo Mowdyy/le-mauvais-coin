@@ -26,9 +26,6 @@ class Question
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-<<<<<<< Updated upstream
-
-=======
     #[ORM\ManyToOne(inversedBy: 'questions')]
     private ?UserRegister $userRegister = null;
 
@@ -37,7 +34,6 @@ class Question
         $this->createdAt = new \DateTimeImmutable();
     }
     
->>>>>>> Stashed changes
     public function getId(): ?int
     {
         return $this->id;
