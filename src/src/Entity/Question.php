@@ -25,6 +25,9 @@ class Question
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
+    
+    #[ORM\ManyToOne(inversedBy: 'questions')]
+    private ?UserRegister $userRegister = null;
 
     public function __construct()
     {
@@ -80,6 +83,18 @@ class Question
     public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUserRegister(): ?UserRegister
+    {
+        return $this->userRegister;
+    }
+
+    public function setUserRegister(?UserRegister $userRegister): self
+    {
+        $this->userRegister = $userRegister;
 
         return $this;
     }

@@ -12,9 +12,11 @@
                 <td>{{ question.title }}</td>
                 <td>{{ question.answer }}</td>
                 <td>{{ question.createdAt ? question.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                {%if app.user == question.userRegister %}
                 <td>
                     {{ include('question/_delete_form.html.twig') }}
                 </td>
+                {%endif%}
             </tr>
         {% else %}
             <tr>

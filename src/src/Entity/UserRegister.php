@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRegisterRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -14,6 +16,8 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
 {
     public function __construct(){
         $this->setCreatedAt(new \DateTimeImmutable());
+        $this->adverts = new ArrayCollection();
+        $this->questions = new ArrayCollection();
     }
 
     #[ORM\Id]
@@ -51,6 +55,12 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $votes = 0;
 
+    #[ORM\OneToMany(mappedBy: 'userRegister', targetEntity: Advert::class)]
+    private Collection $adverts;
+
+    #[ORM\OneToMany(mappedBy: 'userRegister', targetEntity: Question::class)]
+    private Collection $questions;
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -198,7 +208,73 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+    
+    /**
+     * @return Collection<int, Advert>
+     */
+    public function getAdverts(): Collection
+    {
+        return $this->adverts;
+    }
 
+    public function addAdvert(Advert $advert): self
+    {
+        if (!$this->adverts->contains($advert)) {
+            $this->adverts->add($advert);
+            $advert->setUserRegister($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdvert(Advert $advert): self
+    {
+        if ($this->adverts->removeElement($advert)) {
+            // set the owning side to null (unless already changed)
+            if ($advert->getUserRegister() === $this) {
+                $advert->setUserRegister(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function upVote(int $votes): self
+    {
+        $this->votes = $votes + 1;
+        
+        return $this;
+    }
+    
+    /**
+     * @return Collection<int, Question>
+     */
+    public function getQuestions(): Collection
+    {
+        return $this->questions;
+    }
+
+    public function addQuestion(Question $question): self
+    {
+        if (!$this->questions->contains($question)) {
+            $this->questions->add($question);
+            $question->setUserRegister($this);
+        }
+        return $this;
+    }
+
+    public function removeQuestion(Question $question): self
+    {
+        if ($this->questions->removeElement($question)) {
+            // set the owning side to null (unless already changed)
+            if ($question->getUserRegister() === $this) {
+                $question->setUserRegister(null);
+            }
+        }
+
+        return $this;
+    }
+    
     public function upVote(int $votes): self
     {
         $this->votes = $votes + 1;

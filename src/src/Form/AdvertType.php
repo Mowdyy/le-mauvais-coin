@@ -18,7 +18,6 @@ class AdvertType extends AbstractType
             ->add('title')
             ->add('description')
             ->add('price')
-            ->add('Ajouter', SubmitType::class)
             ->add('image', FileType::class, [
                 'label' => 'image (image file)',
                 'mapped' => false,
@@ -35,6 +34,7 @@ class AdvertType extends AbstractType
                     ])
                 ],
             ])
+            ->add('Ajouter', SubmitType::class)
         ;
     }
 

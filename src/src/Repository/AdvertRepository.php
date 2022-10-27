@@ -38,6 +38,16 @@ class AdvertRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    public function getFilteredAdverts($keyword = ''){
+        $queryBuilder = $this->createQueryBuilder('a');
+        if($keyword !== ''){
+            $queryBuilder
+                ->where('a.title LIKE :keyword')
+                ->setParameter('keyword', '%'.$keyword.'%');
+        }
+
+        return $queryBuilder->getQuery()->getResult();
+    }
 
 //    /**
 //     * @return Advert[] Returns an array of Advert objects

@@ -6,6 +6,7 @@ use App\Entity\Advert;
 use App\Entity\Question;
 use App\Form\AdvertType;
 use App\Form\QuestionType;
+use App\Form\SearchAdvertType;
 use App\Repository\AdvertRepository;
 use App\Repository\QuestionRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,53 +22,69 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class AdvertController extends AbstractController
 {
     #[Route('/advert', name: 'app_advert')]
-    public function index(AdvertRepository $advertRepository)
+    public function index(AdvertRepository $advertRepository,Request $request)
     {
-        $adverts = $advertRepository->findAll();
+        $form = $this->createForm(SearchAdvertType::class);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $adverts = $advertRepository->getFilteredAdverts($form->getData()['keyword']);
+        }else{
+            $adverts = $advertRepository->findAll();
+        }
         return $this->render('home/index.html.twig', [
             'adverts' => $adverts,
+            'form' => $form->createView()
         ]);
     }
     
     #[Route('/advert/add', name: 'app_advert_add', methods: ['GET', 'POST'])]
-    public function addAdvert(Request $request, AdvertRepository $advertRepository, SluggerInterface $slugger): Response
+    public function addAdvert(Request $request, AdvertRepository $advertRepository, EntityManagerInterface $entityManagerInterface, SluggerInterface $slugger): Response
     {
-        $advert = new Advert();
-        $form = $this->createForm(AdvertType::class, $advert);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $image = $form->get('image')->getData();
-            
-            // this condition is needed because the 'brochure' field is not required
-            // so the PDF file must be processed only when a file is uploaded
-            if ($image) {
-                $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$image->guessExtension();
-                
-                // Move the file to the directory where brochures are stored
-                try {
-                    $image->move(
-                        $this->getParameter('images_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
+        $user = $this->getUser();
+        if($user){
+            $advert = new Advert();
+            $form = $this->createForm(AdvertType::class, $advert);
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $image = $form->get('image')->getData();
+                // this condition is needed because the 'brochure' field is not required
+                // so the PDF file must be processed only when a file is uploaded
+                if ($image) {
+                    $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                    // this is needed to safely include the file name as part of the URL
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename.'-'.uniqid().'.'.$image->guessExtension();
+                    
+                    // Move the file to the directory where brochures are stored
+                    try {
+                        $image->move(
+                            $this->getParameter('images_directory'),
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                        // ... handle exception if something happens during file upload
+                    }
+                    $advert->setImageFileName($newFilename);
                 }
-                $advert->setImageFileName($newFilename);
+                
+                // ... persist the $product variable or any other work
+                
+                $advert = $form->getData();
+                $advert->setUserRegister($user);
+                $advertRepository->save($advert, true);
+    
+                return $this->redirectToRoute('app_advert');
             }
-            
-            // ... persist the $product variable or any other work
-            
             $advert = $form->getData();
             $advertRepository->save($advert, true);
-
+            
+            return $this->render('advert/addAdvert.html.twig', [
+                'form' => $form->createView()
+            ]);
+        }else{
             return $this->redirectToRoute('app_advert');
         }
-        return $this->render('advert/addAdvert.html.twig', [
-            'form' => $form->createView()
-        ]);
+        
     }
 
     #[Route('/advert/{id}', name: 'app_advert_page')]
@@ -76,11 +93,13 @@ class AdvertController extends AbstractController
         $question = new Question();
         $advert = $advertRepository->findOneById($id);
         $questions = $advert->getQuestions();
+        $question = new Question();
         $questionForm = $this->createForm(QuestionType::class, $question);
         $questionForm->handleRequest($request);
         if($questionForm->isSubmitted() && $questionForm->isValid()){
             $question = $questionForm->getData();
             $question->setAdvert($advert);
+            $question->setUserRegister($this->getUser());
             $entityManagerInterface->persist($question);
             $entityManagerInterface->flush();
         }

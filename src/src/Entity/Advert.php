@@ -40,6 +40,10 @@ class Advert
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imageFileName = null;
 
+    #[ORM\ManyToOne(inversedBy: 'adverts')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?UserRegister $userRegister = null;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
@@ -48,6 +52,8 @@ class Advert
         $this->setSlug();
         // $this->setUserId();
     }
+
+    
 
     public function getId(): ?int
     {
@@ -184,5 +190,17 @@ class Advert
     public function __toString()
     {
         return $this->title;
+    }
+
+    public function getUserRegister(): ?UserRegister
+    {
+        return $this->userRegister;
+    }
+
+    public function setUserRegister(?UserRegister $userRegister): self
+    {
+        $this->userRegister = $userRegister;
+
+        return $this;
     }
 }
