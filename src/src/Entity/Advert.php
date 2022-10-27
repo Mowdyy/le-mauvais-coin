@@ -31,12 +31,6 @@ class Advert
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $upvotes = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $downvotes = null;
-
     #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'adverts')]
     private Collection $tags;
 
@@ -123,32 +117,6 @@ class Advert
     {
         return $this->slug = 'advert';
     }
-
-    public function getUpvotes(): ?int
-    {
-        return $this->upvotes;
-    }
-
-    public function setUpvotes(?int $upvotes): self
-    {
-        $this->upvotes = $upvotes;
-
-        return $this;
-    }
-
-    public function getDownvotes(): ?int
-    {
-        return $this->downvotes;
-    }
-
-    public function setDownvotes(?int $downvotes): self
-    {
-        $this->downvotes = $downvotes;
-
-        return $this;
-    }
-
-
 
     /**
      * @return Collection<int, Tag>
