@@ -57,7 +57,7 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(mappedBy: 'userRegister', targetEntity: Question::class)]
     private Collection $questions;
-
+    
     public function getId(): ?int
     {
         return $this->id;

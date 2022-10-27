@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Advert;
+use App\Entity\Question;
 use App\Form\AdvertType;
 use App\Form\QuestionType;
 use App\Form\SearchAdvertType;
 use App\Repository\AdvertRepository;
+use App\Repository\QuestionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,7 +47,6 @@ class AdvertController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $image = $form->get('image')->getData();
-                
                 // this condition is needed because the 'brochure' field is not required
                 // so the PDF file must be processed only when a file is uploaded
                 if ($image) {
@@ -74,7 +75,6 @@ class AdvertController extends AbstractController
     
                 return $this->redirectToRoute('app_advert');
             }
-
             $advert = $form->getData();
             $advertRepository->save($advert, true);
             
@@ -88,8 +88,9 @@ class AdvertController extends AbstractController
     }
 
     #[Route('/advert/{id}', name: 'app_advert_page')]
-    public function findAdvertById($id, AdvertRepository $advertRepository): Response
+    public function findAdvertById(EntityManagerInterface $entityManagerInterface,Request $request,$id, AdvertRepository $advertRepository): Response
     {
+        $question = new Question();
         $advert = $advertRepository->findOneById($id);
         $questions = $advert->getQuestions();
         $question = new Question();
@@ -107,6 +108,8 @@ class AdvertController extends AbstractController
         } else {
             return $this->render('advert/index.html.twig', [
                 'advert' => $advert,
+                'questions' => $questions,
+                'questionForm' => $questionForm->createView()
             ]);
         }
     }

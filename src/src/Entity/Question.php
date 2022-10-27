@@ -25,7 +25,7 @@ class Question
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
-
+    
     #[ORM\ManyToOne(inversedBy: 'questions')]
     private ?UserRegister $userRegister = null;
 

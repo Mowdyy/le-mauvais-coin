@@ -2,17 +2,24 @@
 
 namespace App\Controller;
 
+use App\Entity\Question;
+use App\Form\QuestionType;
+use App\Repository\QuestionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route('/question')]
 class QuestionController extends AbstractController
 {
-    #[Route('/question', name: 'app_question')]
-    public function index(): Response
+    #[Route('/{id}', name: 'app_question_delete', methods: ['POST'])]
+    public function delete(Request $request, Question $question, QuestionRepository $questionRepository)
     {
-        return $this->render('question/index.html.twig', [
-            'controller_name' => 'QuestionController',
-        ]);
+        if ($this->isCsrfTokenValid('delete'.$question->getId(), $request->request->get('_token'))) {
+            $questionRepository->remove($question, true);
+        }
+        $route = $request->headers->get('referer');
+        return $this->redirect($route);
     }
 }
