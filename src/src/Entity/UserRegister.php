@@ -14,6 +14,7 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
 {
     public function __construct(){
         $this->setCreatedAt(new \DateTimeImmutable());
+        $this->setVotes(rand(-20, 50));
     }
 
     #[ORM\Id]
@@ -47,6 +48,9 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     private ?string $zipCode = null;
+
+    #[ORM\Column]
+    private ?int $votes = 0;
 
     public function getId(): ?int
     {
@@ -174,6 +178,24 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
     public function setZipCode(string $zipCode): self
     {
         $this->zipCode = $zipCode;
+
+        return $this;
+    }
+
+    public function getVotes(): ?int
+    {
+        return $this->votes;
+    }
+
+    public function getVotesString(): ?int
+    {
+        $prefix= $this->getVotes() >= 0 ?  "+" : "-";
+        return sprintf('%s, %d', $prefix, abs($this->getVotes()));
+    }
+
+    public function setVotes(int $votes): self
+    {
+        $this->votes = $votes;
 
         return $this;
     }
