@@ -15,6 +15,28 @@
     {%endif%}
 </div>
 <div class="example-wrapper">
+    <h4>{{ user.userName }}</h4>
+    <th>
+        Votes: <span class="badge bg-secondary"></span>{{ user.votes }}
+    </th>
+    <td>
+        <button
+            type="button"
+            data-action="live#action"
+            data-action-name="vote(direction=up)"
+        >
+            Up
+        </button>
+        <button
+            type="button"
+            data-action="live#action"
+            data-action-name="vote(direction=down)"
+        >
+            Down
+        </button>
+    </td>
+</div>
+<div class="example-wrapper">
     <a href="/advert"><button>Voir les annonces</button></a>
 </div>
 <div class="example-wrapper">
