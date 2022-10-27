@@ -26,7 +26,18 @@ class Question
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+<<<<<<< Updated upstream
 
+=======
+    #[ORM\ManyToOne(inversedBy: 'questions')]
+    private ?UserRegister $userRegister = null;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
+    
+>>>>>>> Stashed changes
     public function getId(): ?int
     {
         return $this->id;
@@ -76,6 +87,18 @@ class Question
     public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUserRegister(): ?UserRegister
+    {
+        return $this->userRegister;
+    }
+
+    public function setUserRegister(?UserRegister $userRegister): self
+    {
+        $this->userRegister = $userRegister;
 
         return $this;
     }

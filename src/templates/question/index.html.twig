@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Question index{% endblock %}
+
+{% block body %}
+    <h1>Question index</h1>
+
+    <table class="table">
+        <tbody>
+        {% for question in questions %}
+            <tr>
+                <td>{{ question.title }}</td>
+                <td>{{ question.answer }}</td>
+                <td>{{ question.createdAt ? question.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                {%if app.user == question.userRegister %}
+                <td>
+                    {{ include('question/_delete_form.html.twig') }}
+                </td>
+                {%endif%}
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">Aucune question posée</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
