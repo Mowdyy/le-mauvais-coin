@@ -21,9 +21,13 @@ class Tag
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
+    #[ORM\ManyToMany(targetEntity: Event::class, mappedBy: 'tag')]
+    private Collection $events;
+
     public function __construct()
     {
         $this->adverts = new ArrayCollection();
+        $this->events = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -70,5 +74,32 @@ class Tag
     public function __toString()
     {
         return $this->title;
+    }
+
+    /**
+     * @return Collection<int, Event>
+     */
+    public function getEvents(): Collection
+    {
+        return $this->events;
+    }
+
+    public function addEvent(Event $event): self
+    {
+        if (!$this->events->contains($event)) {
+            $this->events->add($event);
+            $event->addTag($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvent(Event $event): self
+    {
+        if ($this->events->removeElement($event)) {
+            $event->removeTag($this);
+        }
+
+        return $this;
     }
 }
