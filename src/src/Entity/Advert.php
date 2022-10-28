@@ -41,6 +41,7 @@ class Advert
     private Collection $tags;
 
     #[ORM\OneToMany(mappedBy: 'advert', targetEntity: Question::class)]
+    #[OMR\JoinColumn(onDelete : 'CASCADE')]
     private Collection $questions;
 
     #[ORM\Column(length: 255, nullable: true)]

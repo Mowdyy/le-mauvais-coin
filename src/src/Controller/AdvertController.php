@@ -75,16 +75,13 @@ class AdvertController extends AbstractController
     
                 return $this->redirectToRoute('app_advert');
             }
-            $advert = $form->getData();
-            $advertRepository->save($advert, true);
-            
-            return $this->render('advert/addAdvert.html.twig', [
-                'form' => $form->createView()
-            ]);
         }else{
             return $this->redirectToRoute('app_advert');
         }
         
+        return $this->render('advert/addAdvert.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 
     #[Route('/advert/{id}', name: 'app_advert_page')]
@@ -93,15 +90,14 @@ class AdvertController extends AbstractController
         $question = new Question();
         $advert = $advertRepository->findOneById($id);
         $questions = $advert->getQuestions();
-        $question = new Question();
         $questionForm = $this->createForm(QuestionType::class, $question);
         $questionForm->handleRequest($request);
         if($questionForm->isSubmitted() && $questionForm->isValid()){
-            $question = $questionForm->getData();
-            $question->setAdvert($advert);
-            $question->setUserRegister($this->getUser());
-            $entityManagerInterface->persist($question);
-            $entityManagerInterface->flush();
+            //dd($questionForm->getData());
+            return $this->redirectToRoute('app_question_add', [
+                'id' => $id, 
+                'questionFormData' => $questionForm->getData()->getTitle()
+            ]);
         }
         if (!$advert) {
             throw $this->createNotFoundException("L'annonce que vous recherchez n'existe pas :'(");
@@ -113,12 +109,16 @@ class AdvertController extends AbstractController
             ]);
         }
     }
+
+
     
     #[Route('/advert/{id}/delete', name: 'app_advert_delete', methods: ['GET', 'POST'])]
-    public function deleteAdvert($id, AdvertRepository $advertRepository) 
+    public function deleteAdvert($id, AdvertRepository $advertRepository, QuestionRepository $questionRepository , Advert $advert) 
     {
-        $advert = $advertRepository->findOneById($id);
-        $advertRepository->remove($advert, true);
+        if($this->getUser() == $advert->getUserRegister()){
+            $advertRepository->remove($advert, true);
+        }
+        //dd($advert->getQuestions());
         return $this->redirectToRoute('app_advert');
     }
 }
