@@ -16,25 +16,15 @@
 </div>
 <div class="example-wrapper">
     <h4>{{ user.userName }}</h4>
-    <th>
+    <p>
         Votes: <span class="badge bg-secondary"></span>{{ user.votes }}
-    </th>
-    <td>
-        <button
-            type="button"
-            data-action="live#action"
-            data-action-name="vote(direction=up)"
-        >
-            Up
-        </button>
-        <button
-            type="button"
-            data-action="live#action"
-            data-action-name="vote(direction=down)"
-        >
-            Down
-        </button>
-    </td>
+    </p>
+        <a href="/vote-up/{{ user.id }}">
+            <button>Up</button>
+        </a>
+        <a href="/vote-down/{{ user.id }}">
+            <button>Down</button>
+        </a>
 </div>
 <div class="example-wrapper">
     <a href="/advert"><button>Voir les annonces</button></a>
