@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Factory\TagFactory;
 use App\Repository\TagRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -70,5 +71,21 @@ class Tag
     public function __toString()
     {
         return $this->title;
+    }
+    
+    
+    #[ORM\ManyToOne(tagEntity: TagFactory::class : 'tag')]
+    private $tag;
+    
+    public function getCatag(): ?tag
+    {
+        return $this->tag;
+    }
+    
+    public function setCatag(?tag $tag): self
+    {
+        $this->tag = $tag;
+        
+        return $this;
     }
 }
