@@ -22,9 +22,16 @@ class Tag
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $designation = null;
+
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'tag')]
+    private Collection $tag;
+
     public function __construct()
     {
         $this->adverts = new ArrayCollection();
+        $this->tag = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -74,8 +81,8 @@ class Tag
     }
     
     
-    #[ORM\ManyToOne(tagEntity: TagFactory::class : 'tag')]
-    private $tag;
+    // #[ORM\ManyToOne(tagEntity: TagFactory::class:'tag')]
+    // private $tag;
     
     public function getCatag(): ?tag
     {
@@ -86,6 +93,45 @@ class Tag
     {
         $this->tag = $tag;
         
+        return $this;
+    }
+
+    public function getDesignation(): ?string
+    {
+        return $this->designation;
+    }
+
+    public function setDesignation(string $designation): self
+    {
+        $this->designation = $designation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getTag(): Collection
+    {
+        return $this->tag;
+    }
+
+    public function addTag(User $tag): self
+    {
+        if (!$this->tag->contains($tag)) {
+            $this->tag->add($tag);
+            $tag->addTag($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTag(User $tag): self
+    {
+        if ($this->tag->removeElement($tag)) {
+            $tag->removeTag($this);
+        }
+
         return $this;
     }
 }
