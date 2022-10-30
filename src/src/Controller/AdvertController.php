@@ -132,7 +132,7 @@ class AdvertController extends AbstractController
                 'advert' => $advert,
                 'questions' => $questions,
                 'questionForm' => $questionForm->createView(),
-                'answerForm' => $answerForm->createView()
+                'answerForm' => $answerForm->createView(),
                 'user' => $user
             ]);
         }
