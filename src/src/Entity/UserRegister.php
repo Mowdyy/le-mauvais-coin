@@ -53,6 +53,9 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $zipCode = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $votes = 0;
+
     #[ORM\OneToMany(mappedBy: 'userRegister', targetEntity: Advert::class)]
     private Collection $adverts;
 
@@ -191,7 +194,7 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
+    
     /**
      * @return Collection<int, Advert>
      */
@@ -221,7 +224,7 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
+    
     /**
      * @return Collection<int, Question>
      */
@@ -236,7 +239,6 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
             $this->questions->add($question);
             $question->setUserRegister($this);
         }
-
         return $this;
     }
 
@@ -278,6 +280,31 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
                 $answer->setUser(null);
             }
         }
+    
+    public function getVotesString(): string
+    {
+        $prefix = $this->getVotes() >= 0 ? "+" : "-";
+        return sprintf('%s %d', $prefix, abs($this->getVotes()));
+    }
+
+    public function upVote(): int
+    {
+        return $this->votes++;
+    }
+
+    public function downVote(): int
+    {
+        return $this->votes--;
+    }
+
+    public function getVotes(): ?int
+    {
+        return $this->votes;
+    }
+
+    public function setVotes(?int $votes): self
+    {
+        $this->votes = $votes;
 
         return $this;
     }

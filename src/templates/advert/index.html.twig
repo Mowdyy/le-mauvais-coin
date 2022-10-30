@@ -17,6 +17,10 @@
 </div>
 <div class="example-wrapper">
     <img src='{{ asset('uploads/images/')~advert.imageFileName }}'/>
+    {{ include('vote/vote.html.twig') }}
+</div>
+<div class="example-wrapper">
+    <a href="/advert"><button>Voir les annonces</button></a>
 </div>
 
 <div class="example-wrapper">

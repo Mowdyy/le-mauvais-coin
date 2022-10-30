@@ -26,7 +26,7 @@ class AdvertController extends AbstractController
 {
     
     #[Route('/advert', name: 'app_advert')]
-    public function index(AdvertRepository $advertRepository,Request $request)
+    public function index(AdvertRepository $advertRepository, Request $request)
     {
         $form = $this->createForm(SearchAdvertType::class);
         $form->handleRequest($request);
@@ -88,6 +88,7 @@ class AdvertController extends AbstractController
         /** gestion du formulaire pour ajouter une question à l'annonce */
         $question = new Question();
         $advert = $advertRepository->findOneById($id);
+        $user = $advert->getUserRegister();
         $questions = $advert->getQuestions();
         $questionForm = $this->createForm(QuestionType::class, $question);
         $questionForm->handleRequest($request);
@@ -132,6 +133,7 @@ class AdvertController extends AbstractController
                 'questions' => $questions,
                 'questionForm' => $questionForm->createView(),
                 'answerForm' => $answerForm->createView()
+                'user' => $user
             ]);
         }
     }
