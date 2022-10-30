@@ -18,7 +18,6 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
         $this->setCreatedAt(new \DateTimeImmutable());
         $this->adverts = new ArrayCollection();
         $this->questions = new ArrayCollection();
-        $this->voteList = [];
     }
 
     #[ORM\Id]
@@ -53,7 +52,7 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $zipCode = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $votes = 0;
 
     #[ORM\OneToMany(mappedBy: 'userRegister', targetEntity: Advert::class)]
@@ -191,24 +190,6 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
-    public function getVotes(): ?int
-    {
-        return $this->votes;
-    }
-
-    public function getVotesString(): ?int
-    {
-        $prefix= $this->getVotes() >= 0 ?  "+" : "-";
-        return sprintf('%s, %d', $prefix, abs($this->getVotes()));
-    }
-
-    public function setVotes(int $votes): self
-    {
-        $this->votes = $votes;
-
-        return $this;
-    }
     
     /**
      * @return Collection<int, Advert>
@@ -269,18 +250,31 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
     
-    public function upVote(int $votes)
+    public function getVotesString(): string
     {
-        $this->votes = $votes + 1;
-
-        return $this->votes;
-
+        $prefix = $this->getVotes() >= 0 ? "+" : "-";
+        return sprintf('%s %d', $prefix, abs($this->getVotes()));
     }
 
-    public function downVote(int $votes)
+    public function upVote(): int
     {
-        $this->votes = $votes - 1;
+        return $this->votes++;
+    }
 
+    public function downVote(): int
+    {
+        return $this->votes--;
+    }
+
+    public function getVotes(): ?int
+    {
         return $this->votes;
+    }
+
+    public function setVotes(?int $votes): self
+    {
+        $this->votes = $votes;
+
+        return $this;
     }
 }

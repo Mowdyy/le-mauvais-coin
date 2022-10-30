@@ -53,6 +53,7 @@ final class UserRegisterFactory extends ModelFactory
             'city' => self::faker()->word(),
             'phoneNumber' => self::faker()->phoneNumber(),
             'zipCode' => self::faker()->word(),
+            'votes' => self::faker()->randomNumber(3)
         ];
     }
 
