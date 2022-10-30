@@ -86,9 +86,10 @@ class AdvertController extends AbstractController
 
     #[Route('/advert/{id}', name: 'app_advert_page')]
     public function findAdvertById(EntityManagerInterface $entityManagerInterface,Request $request,$id, AdvertRepository $advertRepository): Response
-    {
+    { 
         $question = new Question();
         $advert = $advertRepository->findOneById($id);
+        $user = $advert->getUserRegister();
         $questions = $advert->getQuestions();
         $questionForm = $this->createForm(QuestionType::class, $question);
         $questionForm->handleRequest($request);
@@ -105,7 +106,8 @@ class AdvertController extends AbstractController
             return $this->render('advert/index.html.twig', [
                 'advert' => $advert,
                 'questions' => $questions,
-                'questionForm' => $questionForm->createView()
+                'questionForm' => $questionForm->createView(),
+                'user' => $user
             ]);
         }
     }

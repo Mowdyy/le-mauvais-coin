@@ -18,6 +18,7 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
         $this->setCreatedAt(new \DateTimeImmutable());
         $this->adverts = new ArrayCollection();
         $this->questions = new ArrayCollection();
+        $this->voteList = [];
     }
 
     #[ORM\Id]
@@ -52,12 +53,15 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $zipCode = null;
 
+    #[ORM\Column]
+    private ?int $votes = 0;
+
     #[ORM\OneToMany(mappedBy: 'userRegister', targetEntity: Advert::class)]
     private Collection $adverts;
 
     #[ORM\OneToMany(mappedBy: 'userRegister', targetEntity: Question::class)]
     private Collection $questions;
-    
+
     public function getId(): ?int
     {
         return $this->id;
@@ -188,6 +192,24 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getVotes(): ?int
+    {
+        return $this->votes;
+    }
+
+    public function getVotesString(): ?int
+    {
+        $prefix= $this->getVotes() >= 0 ?  "+" : "-";
+        return sprintf('%s, %d', $prefix, abs($this->getVotes()));
+    }
+
+    public function setVotes(int $votes): self
+    {
+        $this->votes = $votes;
+
+        return $this;
+    }
+    
     /**
      * @return Collection<int, Advert>
      */
@@ -217,7 +239,7 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
+    
     /**
      * @return Collection<int, Question>
      */
@@ -232,7 +254,6 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
             $this->questions->add($question);
             $question->setUserRegister($this);
         }
-
         return $this;
     }
 
@@ -246,5 +267,20 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+    
+    public function upVote(int $votes)
+    {
+        $this->votes = $votes + 1;
+
+        return $this->votes;
+
+    }
+
+    public function downVote(int $votes)
+    {
+        $this->votes = $votes - 1;
+
+        return $this->votes;
     }
 }
