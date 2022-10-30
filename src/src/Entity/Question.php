@@ -31,7 +31,7 @@ class Question
     #[ORM\ManyToOne(inversedBy: 'questions')]
     private ?UserRegister $userRegister = null;
 
-    #[ORM\OneToMany(mappedBy: 'question', targetEntity: Answer::class)]
+    #[ORM\OneToMany(mappedBy: 'question', targetEntity: Answer::class, orphanRemoval : true)]
     private Collection $answers;
 
     public function __construct()
@@ -133,6 +133,10 @@ class Question
         }
 
         return $this;
+    }
+
+    public function __toString(){
+        return $this->title;
     }
 
 }

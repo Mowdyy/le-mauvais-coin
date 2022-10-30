@@ -23,6 +23,16 @@ class Answer
     #[ORM\JoinColumn(nullable: false)]
     private ?Question $question = null;
 
+    #[ORM\ManyToOne(inversedBy: 'answers')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?UserRegister $user = null;
+
+
+    public function __construct(){
+        $this->createdAt = new \DateTimeImmutable();
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +70,22 @@ class Answer
     public function setQuestion(?Question $question): self
     {
         $this->question = $question;
+
+        return $this;
+    }
+
+    public function __toString(){
+        return $this->getQuestion()->getTitle();
+    }
+
+    public function getUser(): ?UserRegister
+    {
+        return $this->user;
+    }
+
+    public function setUser(?UserRegister $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
