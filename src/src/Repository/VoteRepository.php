@@ -46,7 +46,7 @@ class VoteRepository extends ServiceEntityRepository
     {
         $hasVote = false;
 
-        $result =  $this->createQueryBuilder('v')
+        $result = $this->createQueryBuilder('v')
             ->select('count(v.to_user_id)')
             ->andWhere('v.to_user_id = :toUser')
             ->andWhere('v.from_user_id = :fromUser')
@@ -59,9 +59,7 @@ class VoteRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        if ($result >= 1) {
-            $hasVote = true;
-        }
+        if ($result >= 1) $hasVote = true;
         return $hasVote;
     }
 
