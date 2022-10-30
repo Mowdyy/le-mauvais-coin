@@ -6,6 +6,7 @@ use App\Entity\Advert;
 use App\Entity\Question;
 use App\Form\AdvertType;
 use App\Form\QuestionType;
+use App\Form\TagFormType;
 use App\Repository\AdvertRepository;
 use App\Repository\QuestionRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,8 +26,13 @@ class AdvertController extends AbstractController
     public function index(AdvertRepository $advertRepository)
     {
         $adverts = $advertRepository->findAll();
+
+        $form = $this->createForm(TagFormType::class);
+
+
         return $this->render('home/index.html.twig', [
             'adverts' => $adverts,
+            'form' => $form->createView()
         ]);
     }
     

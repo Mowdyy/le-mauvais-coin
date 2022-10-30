@@ -38,16 +38,9 @@ class AppFixtures extends Fixture
         // $users[] = $admin;
         // $manager->persist($admin);
 
-        UserRegisterFactory::createMany(10);
-
 
         TagFactory::createMany(40);
-        AdvertFactory::createMany(10, function () {
-            return ['tags' => [TagFactory::random()]];
-        });
-        Questionfactory::createMany(1, function () {
-            return ['advert' => AdvertFactory::first()];
-        });
+        
 
         //$manager->flush();
     }
