@@ -64,7 +64,7 @@ class RegistrationController extends AbstractController
             $direction = $request->query->get('direction');
             if (!$voteRepository->hasVote($fromUserID, $toUserId, $direction)) {
                 $vote->setFromUserId($fromUserID)->setToUserId($toUserId);
-                // $direction == 'up' ? $user->upVote() : $user->downVote();
+                $direction == 'up' ? $user->upVote() : $user->downVote();
                 $voteRepository->upDateVote($fromUserID, $toUserId, $direction);
                 $vote->setDirection($direction);
 
