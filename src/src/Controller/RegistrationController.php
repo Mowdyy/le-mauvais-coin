@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\UserRegister;
+use App\Entity\Vote;
 use App\Form\RegistrationFormType;
+use App\Repository\VoteRepository;
 use App\Security\LoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -49,5 +51,30 @@ class RegistrationController extends AbstractController
                 'registrationForm' => $form->createView(),
             ]);
         }
+    }
+
+    #[Route('/{id}/vote', name: "app_user_vote", methods: ['GET', 'POST'])]
+    public function userVote(UserRegister $user, Request $request, EntityManagerInterface $entityManager,  VoteRepository $voteRepository): Response
+    {
+        $fromUserID = $this->getUser()->getId();
+        $toUserId = $user->getId();
+        $vote = new Vote();
+
+        if ($request->query->get('direction')) {
+            $direction = $request->query->get('direction');
+            if (!$voteRepository->hasVote($fromUserID, $toUserId, $direction)) {
+                $vote->setFromUserId($fromUserID)->setToUserId($toUserId);
+                $direction == 'up' ? $user->upVote() : $user->upDown();
+                $voteRepository->upDateVote($fromUserID, $toUserId, $direction);
+                $vote->setDirection($direction);
+                $entityManager->persist($vote);
+                $entityManager->flush();
+            }
         }
+
+        return $this->render('vote/vote.html.twig', [
+            'user' => $user
+        ]);
+    }
+
 }
