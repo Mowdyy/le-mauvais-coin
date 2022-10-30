@@ -261,7 +261,7 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->votes++;
     }
 
-    public function upDown(): int
+    public function downVote(): int
     {
         return $this->votes--;
     }

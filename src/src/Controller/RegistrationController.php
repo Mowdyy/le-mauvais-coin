@@ -64,17 +64,19 @@ class RegistrationController extends AbstractController
             $direction = $request->query->get('direction');
             if (!$voteRepository->hasVote($fromUserID, $toUserId, $direction)) {
                 $vote->setFromUserId($fromUserID)->setToUserId($toUserId);
-                $direction == 'up' ? $user->upVote() : $user->upDown();
+                // $direction == 'up' ? $user->upVote() : $user->downVote();
                 $voteRepository->upDateVote($fromUserID, $toUserId, $direction);
                 $vote->setDirection($direction);
+
                 $entityManager->persist($vote);
                 $entityManager->flush();
             }
         }
-
-        return $this->render('vote/vote.html.twig', [
+        $this->render('vote/vote.html.twig', [
             'user' => $user
         ]);
+        $route = $request->headers->get('referer');
+        return $this->redirect($route);
     }
 
 }

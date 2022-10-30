@@ -22,7 +22,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class AdvertController extends AbstractController
 {
     #[Route('/advert', name: 'app_advert')]
-    public function index(AdvertRepository $advertRepository,Request $request)
+    public function index(AdvertRepository $advertRepository, Request $request)
     {
         $form = $this->createForm(SearchAdvertType::class);
         $form->handleRequest($request);
