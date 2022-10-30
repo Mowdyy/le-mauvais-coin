@@ -18,6 +18,7 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
         $this->setCreatedAt(new \DateTimeImmutable());
         $this->adverts = new ArrayCollection();
         $this->questions = new ArrayCollection();
+        $this->answers = new ArrayCollection();
     }
 
     #[ORM\Id]
@@ -61,6 +62,9 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'userRegister', targetEntity: Question::class)]
     private Collection $questions;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Answer::class)]
+    private Collection $answers;
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -249,6 +253,33 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Answer>
+     */
+    public function getAnswers(): Collection
+    {
+        return $this->answers;
+    }
+
+    public function addAnswer(Answer $answer): self
+    {
+        if (!$this->answers->contains($answer)) {
+            $this->answers->add($answer);
+            $answer->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnswer(Answer $answer): self
+    {
+        if ($this->answers->removeElement($answer)) {
+            // set the owning side to null (unless already changed)
+            if ($answer->getUser() === $this) {
+                $answer->setUser(null);
+            }
+        }
     
     public function getVotesString(): string
     {
