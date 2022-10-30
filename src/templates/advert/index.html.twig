@@ -15,6 +15,18 @@
     {%endif%}
 </div>
 <div class="example-wrapper">
+    <h4>{{ user.userName }}</h4>
+    <p>
+        Votes: <span class="badge bg-secondary"></span>{{ user.votes }}
+    </p>
+    <a href="/vote-up/{{ user.id }}">
+        <button>Up</button>
+    </a>
+    <a href="/vote-down/{{ user.id }}">
+        <button>Down</button>
+    </a>
+</div>
+<div class="example-wrapper">
     <a href="/advert"><button>Voir les annonces</button></a>
 </div>
 <div class="example-wrapper">

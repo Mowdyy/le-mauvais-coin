@@ -75,8 +75,6 @@ class AdvertController extends AbstractController
     
                 return $this->redirectToRoute('app_advert');
             }
-            $advert = $form->getData();
-            $advertRepository->save($advert, true);
             
             return $this->render('advert/addAdvert.html.twig', [
                 'form' => $form->createView()
@@ -92,6 +90,7 @@ class AdvertController extends AbstractController
     { 
         $question = new Question();
         $advert = $advertRepository->findOneById($id);
+        $user = $advert->getUserRegister();
         $questions = $advert->getQuestions();
         $question = new Question();
         $questionForm = $this->createForm(QuestionType::class, $question);
@@ -109,7 +108,8 @@ class AdvertController extends AbstractController
             return $this->render('advert/index.html.twig', [
                 'advert' => $advert,
                 'questions' => $questions,
-                'questionForm' => $questionForm->createView()
+                'questionForm' => $questionForm->createView(),
+                'user' => $user
             ]);
         }
     }

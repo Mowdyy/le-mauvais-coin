@@ -18,6 +18,7 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
         $this->setCreatedAt(new \DateTimeImmutable());
         $this->adverts = new ArrayCollection();
         $this->questions = new ArrayCollection();
+        $this->voteList = [];
     }
 
     #[ORM\Id]
@@ -60,7 +61,7 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(mappedBy: 'userRegister', targetEntity: Question::class)]
     private Collection $questions;
-    
+
     public function getId(): ?int
     {
         return $this->id;
@@ -238,13 +239,6 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
-    public function upVote(int $votes): self
-    {
-        $this->votes = $votes + 1;
-        
-        return $this;
-    }
     
     /**
      * @return Collection<int, Question>
@@ -275,17 +269,18 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
     
-    public function upVote(int $votes): self
+    public function upVote(int $votes)
     {
         $this->votes = $votes + 1;
 
-        return $this;
+        return $this->votes;
+
     }
 
-    public function downVote(int $votes): self
+    public function downVote(int $votes)
     {
         $this->votes = $votes - 1;
 
-        return $this;
+        return $this->votes;
     }
 }
