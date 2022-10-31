@@ -14,12 +14,10 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}
         <nav>
-            {{ form_start(searchForm) }}
-            {{ form_widget(searchForm) }}
-            {{ form_end(searchForm) }}
+            {{ render(controller('App\\Controller\\SearchController::index')) }}
         </nav>
+        {% block body %}
         {% endblock %}
     </body>
 </html>

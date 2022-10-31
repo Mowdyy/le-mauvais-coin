@@ -7,8 +7,8 @@ use App\Entity\Question;
 use App\Entity\Answer;
 use App\Form\AdvertType;
 use App\Form\QuestionType;
-use App\Form\SearchAdvertType;
 use App\Form\AnswerType;
+use App\Form\SearchAdvertType;
 use App\Repository\AdvertRepository;
 use App\Repository\AnswerRepository;
 use App\Repository\QuestionRepository;
@@ -26,18 +26,11 @@ class AdvertController extends AbstractController
 {
     
     #[Route('/advert', name: 'app_advert')]
-    public function index(AdvertRepository $advertRepository, Request $request)
-    {
-        $form = $this->createForm(SearchAdvertType::class);
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
-            $adverts = $advertRepository->getFilteredAdverts($form->getData()['keyword']);
-        }else{
-            $adverts = $advertRepository->findAll();
-        }
+    public function index(AdvertRepository $advertRepository)
+    {   
+        $adverts = $advertRepository->findAll();
         return $this->render('home/index.html.twig', [
             'adverts' => $adverts,
-            'form' => $form->createView()
         ]);
     }
     
@@ -132,7 +125,7 @@ class AdvertController extends AbstractController
                 'advert' => $advert,
                 'questions' => $questions,
                 'questionForm' => $questionForm->createView(),
-                'answerForm' => $answerForm->createView()
+                'answerForm' => $answerForm->createView(),
                 'user' => $user
             ]);
         }

@@ -280,6 +280,7 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
                 $answer->setUser(null);
             }
         }
+    }
     
     public function getVotesString(): string
     {
