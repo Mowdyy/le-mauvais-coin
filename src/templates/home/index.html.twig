@@ -12,6 +12,7 @@
 
     Toutes les annonces sont référencées ici:
     <ul>
+
         {% for advert in adverts %}
             <li><a href="./advert/{{ advert.id }}">{{ advert.title }}</href></li>
         {% endfor %}
@@ -22,7 +23,6 @@
     <a href="/advert/add"><button>Poster une annonce</button></a>
 </div>
 {%endif%}
-{{ form(form) }}
 
 
 {% endblock %}
