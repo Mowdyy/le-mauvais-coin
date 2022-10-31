@@ -1,28 +1,98 @@
 {% extends 'base.html.twig' %}
+{% block javascripts %}
+     {{ parent() }}
+     {{ encore_entry_script_tags('adverts') }}
+{% endblock %}
 
-{% block title %}Le Mauvais Coin!{% endblock %}
+
+{% block title %}lemauvaiscoin{% endblock %}
+
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
+    <div class="content-wrapper">
+        <div class="search-recap">
+            <h1>Toutes les annonces</h1>
+            <span class="search-recap-count">{{adverts|length }} résultats</span>
+        </div>
+        <div class="content">
+            <div class="left-content">
+                {% for advert in adverts %}
+                <div class="advert" onclick="location.href='./advert/{{ advert.id }}';">
+                    <div class="advert-image">
+                        <img src="{{ asset('uploads/images/'~advert.imageFileName) }}" alt="" srcset="">
+                    </div>
+                    <div class="advert-content">
+                        <div class="advert-info">
+                        <span class="advert-title">
+                            {{advert.title}}
+                        </span>
+                        <span class="advert-location">{{advert.userRegister.city}} {{advert.userRegister.zipcode}}</span>
+                        <span class="advert-date">{{advert.createdAt|format_datetime('long', 'short', locale='fr')}}</span>
+                    </div>
+                    <span class="advert-price">{{advert.price}}€</span>
+                        <div class="advert-tags">
+                            <div class="advert-tag">#chaussures</div>
+                            <div class="advert-tag">#chaussures</div>
+                            <div class="advert-tag">#chaussures</div>
+                            <div class="advert-tag">#vetements</div>
+                            <div class="advert-tag">#vetements</div>
+                            
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="right-content">
+                <div class="advanced-research">
+                    <h2>Affiner la recherche</h2>
+                    <div class="advanced-research-tags-wrapper">
+                        <h3>Tags</h3>
+                        <div class="advanced-research-tags">
+                            <div class="advanced-research-tag">#chaussures</div>
+                            <div class="advanced-research-tag">#converses</div>
+                            <div class="advanced-research-tag">#nike</div>
+                            <div class="advanced-research-tag">#asics</div>
+                            <div class="advanced-research-tag">#neuf</div>
+                            <div class="advanced-research-tag">#occasion</div>
+                            <div class="advanced-research-tag">#noir</div>
+                        </div>
+                        <div class="add-tag" action="">
+                            <span>#</span>
+                            <input type="text">
+                            <button>Ajouter</button>
+                        </div>
+                    </div>
+                    <div class="advanced-research-price-wrapper">
+                        <div class="advanced-research-min-price-wrapper">
+                            <h3>Prix minimum</h3>
+                            <div class="advanced-research-min-price">
+                                <input type="text">
+                                <span>€</span>
+                            </div>
+                        </div>
+                        <div class="advanced-research-max-price-wrapper">
+                            <h3>Prix maximum</h3>
+                            <div class="advanced-research-max-price">
+                                <input type="text">
+                                <span>€</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class=advanced-research-submit>
+                        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="8.5" cy="8.5" r="7" stroke="black" stroke-width="3"/>
+                            <path d="M15 15L19 19" stroke="black" stroke-width="3" stroke-linecap="square"/>
+                        </svg>                                    
+                        Rechercher
+                    </button>
+                </div>
+                <div class="ad-frame"></div>
+            </div>
+        </div>
+    </div>
+    
 
-    Toutes les annonces sont référencées ici:
-    <ul>
-        {% for advert in adverts %}
-            <li><a href="./advert/{{ advert.id }}">{{ advert.title }}</href></li>
-        {% endfor %}
-    </ul>
-</div>
-{%if app.user %}
-    <div class="example-wrapper">
-    <a href="/advert/add"><button>Poster une annonce</button></a>
-</div>
-{%endif%}
-{{ form(form) }}
 
 
 {% endblock %}

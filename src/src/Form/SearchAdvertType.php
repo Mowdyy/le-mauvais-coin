@@ -15,7 +15,11 @@ class SearchAdvertType extends AbstractType
     {
         $builder
             ->add('keyword', TextType::class,[
-                'required' => false
+                'required' => false,
+                'label' => false,
+                'attr' => array(
+                    'placeholder' => 'Maison en ruines, jean troué...'
+                )
             ])
         ;
     }

@@ -30,6 +30,8 @@ class AdvertController extends AbstractController
             $adverts = $advertRepository->getFilteredAdverts($form->getData()['keyword']);
         }else{
             $adverts = $advertRepository->findAll();
+            foreach ($adverts as $advert) {
+            }
         }
         return $this->render('home/index.html.twig', [
             'adverts' => $adverts,
