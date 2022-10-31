@@ -40,7 +40,7 @@ final class TagFactory extends ModelFactory
     {
         return [
             // TODO add your default values here (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories)
-            'title' => self::faker()->text(),
+            'title' => self::faker()->word(),
         ];
     }
 

@@ -34,7 +34,8 @@ class Advert
     #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'adverts')]
     private Collection $tags;
 
-    #[ORM\OneToMany(mappedBy: 'advert', targetEntity: Question::class)]
+    #[ORM\OneToMany(mappedBy: 'advert', targetEntity: Question::class, orphanRemoval : true)]
+    #[ORM\JoinColumn(onDelete : 'CASCADE')]
     private Collection $questions;
 
     #[ORM\Column(length: 255, nullable: true)]

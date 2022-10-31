@@ -4,9 +4,10 @@
     <h1>Question index</h1>
 
     <table class="table">
-        <tbody>
+        <body>
         {% for question in questions %}
             <tr>
+                <td>{{ question.id }}</td>
                 <td>{{ question.title }}</td>
                 <td>{{ question.answer }}</td>
                 <td>{{ question.createdAt ? question.createdAt|date('Y-m-d H:i:s') : '' }}</td>
@@ -14,14 +15,39 @@
                 <td>
                     {{ include('question/_delete_form.html.twig') }}
                 </td>
+                <td>
+                   <a href='#addAnswerForm' data-answer data-id='{{question.id}}'><button>Répondre</button></a>
+                </td>
                 {%endif%}
+                <td>
+                    {%for answer in question.answers %}
+                        {{ answer.answer }}
+                        {{ answer.createdAt ? answer.createdAt|date('Y-m-d H:i:s') : ''}}
+                        {{ answer.user.userName }}
+                    {%endfor%}
+                </td>
             </tr>
         {% else %}
             <tr>
                 <td colspan="5">Aucune question posée</td>
             </tr>
         {% endfor %}
-        </tbody>
+        </body>
     </table>
+<script>
+    let isAnswering = false
 
+    function isAnsweringFunction(id){
+        isAnswering = !isAnswering
+        answerContainer = document.getElementById(`answerContainer${id}`);
+        console.log(isAnswering)
+        if(isAnswering){
+        answerContainer.style.display = 'block'
+        }else{
+        answerContainer.style.display = 'none'
+
+        }
+        console.log( answerContainer.style.display)
+    }
+</script>
 {% endblock %}

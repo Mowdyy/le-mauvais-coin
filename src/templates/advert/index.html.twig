@@ -5,36 +5,49 @@
 <style>
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    #answerFormContainer { display : none }
 </style>
 
 <div class="example-wrapper">
     <h1>{{ advert.title }}! ✅</h1>
     {%if app.user == advert.userRegister %}
-    <a href="/advert/{{ advert.id }}/delete"><button>Supprimer</button></a>
+    <a href="{{path('app_advert_delete', {id : advert.id})}}"><button>Supprimer</button></a>
     {%endif%}
 </div>
 <div class="example-wrapper">
-    <h4>{{ user.userName }}</h4>
-    <p>
-        Votes: <span class="badge bg-secondary"></span>{{ user.votes }}
-    </p>
-    <a href="/vote-up/{{ user.id }}">
-        <button>Up</button>
-    </a>
-    <a href="/vote-down/{{ user.id }}">
-        <button>Down</button>
-    </a>
+    <img src='{{ asset('uploads/images/')~advert.imageFileName }}'/>
+    {{ include('vote/vote.html.twig') }}
 </div>
 <div class="example-wrapper">
     <a href="/advert"><button>Voir les annonces</button></a>
 </div>
+
 <div class="example-wrapper">
     {{ include('question/index.html.twig') }}
 </div>
 
-{%if app.user%}
-<div class="example-wrapper">
+<div class="example-wrapper" id="answerFormContainer">
+    {{ form(answerForm) }}
+</div>
+
+{%if app.user %}
+<div class="example-wrapper" >
     {{ form(questionForm) }}
+   {# {{ include('question/new.html.twig') }} #}
 </div>
 {%endif%}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        window.onload = () => {
+            document.querySelectorAll("[data-answer]").forEach(element => {
+                element.addEventListener("click", function() {
+                    document.querySelector('#answer_questionId').value = this.dataset.id;
+                    console.log(document.querySelector('#answer_questionId').value)
+                    document.querySelector('#answerFormContainer').style.display = 'block'
+                })
+            })
+        }
+    </script>
 {% endblock %}

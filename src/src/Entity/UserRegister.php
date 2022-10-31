@@ -18,7 +18,7 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
         $this->setCreatedAt(new \DateTimeImmutable());
         $this->adverts = new ArrayCollection();
         $this->questions = new ArrayCollection();
-        $this->voteList = [];
+        $this->answers = new ArrayCollection();
     }
 
     #[ORM\Id]
@@ -53,7 +53,7 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $zipCode = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $votes = 0;
 
     #[ORM\OneToMany(mappedBy: 'userRegister', targetEntity: Advert::class)]
@@ -62,6 +62,9 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'userRegister', targetEntity: Question::class)]
     private Collection $questions;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Answer::class)]
+    private Collection $answers;
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -191,24 +194,6 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
-    public function getVotes(): ?int
-    {
-        return $this->votes;
-    }
-
-    public function getVotesString(): ?int
-    {
-        $prefix= $this->getVotes() >= 0 ?  "+" : "-";
-        return sprintf('%s, %d', $prefix, abs($this->getVotes()));
-    }
-
-    public function setVotes(int $votes): self
-    {
-        $this->votes = $votes;
-
-        return $this;
-    }
     
     /**
      * @return Collection<int, Advert>
@@ -268,19 +253,60 @@ class UserRegister implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-    
-    public function upVote(int $votes)
+
+    /**
+     * @return Collection<int, Answer>
+     */
+    public function getAnswers(): Collection
     {
-        $this->votes = $votes + 1;
-
-        return $this->votes;
-
+        return $this->answers;
     }
 
-    public function downVote(int $votes)
+    public function addAnswer(Answer $answer): self
     {
-        $this->votes = $votes - 1;
+        if (!$this->answers->contains($answer)) {
+            $this->answers->add($answer);
+            $answer->setUser($this);
+        }
 
+        return $this;
+    }
+
+    public function removeAnswer(Answer $answer): self
+    {
+        if ($this->answers->removeElement($answer)) {
+            // set the owning side to null (unless already changed)
+            if ($answer->getUser() === $this) {
+                $answer->setUser(null);
+            }
+        }
+    }
+    
+    public function getVotesString(): string
+    {
+        $prefix = $this->getVotes() >= 0 ? "+" : "-";
+        return sprintf('%s %d', $prefix, abs($this->getVotes()));
+    }
+
+    public function upVote(): int
+    {
+        return $this->votes++;
+    }
+
+    public function downVote(): int
+    {
+        return $this->votes--;
+    }
+
+    public function getVotes(): ?int
+    {
         return $this->votes;
+    }
+
+    public function setVotes(?int $votes): self
+    {
+        $this->votes = $votes;
+
+        return $this;
     }
 }
