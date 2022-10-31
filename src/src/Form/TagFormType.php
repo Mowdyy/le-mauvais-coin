@@ -61,7 +61,7 @@ class TagFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            // 'data_class' => SearchData::class,
+            'data_class' => Tag::class,
             'method' => 'GET',
             'csrf_protection' => false
         ]);
