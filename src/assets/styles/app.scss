@@ -116,13 +116,20 @@ header{
 
         display: flex;
         flex-direction: row;
-        align-items: center;;
+        align-items: center;
         min-width: 0;
+        flex-shrink: 2;
+        
+        form{
+            min-width: 0;
+            flex-shrink: 1;
+        }
+
 
         .search-bar{
             @include toon-shadow;
-            width: 400px;
-            min-width: 150px;
+            flex-shrink: 1;
+            min-width: 0px;
             overflow: hidden;
             height: 48px;
             padding: 0 4px 0 24px;
@@ -134,32 +141,44 @@ header{
             align-items: center;
             justify-content: space-between;
             position: relative;
+
             .black-magnifying-glass{
                 position: absolute;
                 left:16px;
                 margin-right: 16px;
             }
 
+            #search_advert{
+                display: flex;
+                flex-direction: row;
+                padding-left: 24px;
+                flex-grow: 2;
+
+            }
+
+
             input{
                 flex: 1 2;
-                min-width: 0;
+                width: 260px;
+                min-width: 0px;
                 font-size: 14px;
-                padding-left: 24px;
                 background:transparent;
                 height: 100%;
                 border: 0px;
+                padding-left: 24px;
                 &::placeholder{
                     font-style: italic;
                 }
                 &:focus{
                     outline: 0;
+                    background-color: white;
                 }
                 &:placeholder-shown{
                     text-overflow: ellipsis;
                 }
             }
 
-            .search-button{
+            #search_advert_search{
                 background-color: black;
                 color: white;
                 border:0;
@@ -198,6 +217,10 @@ header{
 
             svg{
                 margin-right: 16px;
+            }
+
+            &-form{
+                flex-shrink: 0;
             }
         }
 
@@ -579,7 +602,7 @@ main{
             padding-left: 16px !important;
         }
     }
-    .search-button{
+    #search_advert_search{
         svg{
             display: block !important;
         }

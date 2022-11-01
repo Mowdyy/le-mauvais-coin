@@ -28,24 +28,10 @@
             <div class="logo"><a href="/">lemauvaiscoin</a></div>
             <div class="logo logo-small"><a href="/">lmc</a></div>
             <div class="header-right">
-                <div class="search-bar">
-                    <svg class="black-magnifying-glass" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="8.5" cy="8.5" r="7" stroke="black" stroke-width="3"/>
-                        <path d="M15 15L19 19" stroke="black" stroke-width="3" stroke-linecap="square"/>
-                    </svg>
-                    {{ form_start(form) }}       
-                        {{form_widget(form)}}            
-                    {{ form_end(form) }}                   
-                    <button class="search-button">
-                        <span>Rechercher</span>
-                        <svg class="white-magnifying-glass" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="8.5" cy="8.5" r="7" stroke="white" stroke-width="3"/>
-                            <path d="M15 15L19 19" stroke="white" stroke-width="3" stroke-linecap="square"/>
-                        </svg>     
-                    </button>
-                </div>
+
+                    {{ render(controller('App\\Controller\\SearchController::index')) }}
                 {%if app.user %}
-                <form action="/advert/add">
+                <form class="publish-advert-form" action="/advert/add">
                 <button type=subimt class="publish-advert">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M6.5 9.5V16H9.5V9.5H16V6.5H9.5V0H6.5V6.5H0V9.5H6.5Z" fill="black"/>
@@ -60,11 +46,10 @@
         </header>
         <main>
             {% block body %}
+            {%endblock%}
         </main>
         <nav>
-            {{ render(controller('App\\Controller\\SearchController::index')) }}
+            
         </nav>
-        {% block body %}
-        {% endblock %}
     </body>
 </html>
