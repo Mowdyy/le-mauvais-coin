@@ -12,8 +12,16 @@
 
     <div class="content-wrapper">
         <div class="search-recap">
-            <h1>Toutes les annonces</h1>
-            <span class="search-recap-count">{{adverts|length }} résultats</span>
+            
+            <h1>
+            {%if query is defined%}
+            Résultats pour "{{ query }}"
+            {%else%}
+            Toutes les annonces
+            {%endif%}</h1>
+            <span class="search-recap-count">    
+                {{adverts|length }} résultat{%if adverts|length > 1%}s{%endif%}
+            </span>
         </div>
         <div class="content">
             <div class="left-content">
