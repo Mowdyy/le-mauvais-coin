@@ -1,6 +1,5 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}{{ advert.title }}{% endblock %}
+{% block title %}{{ advert.title }} - lemauvaiscoin{% endblock %}
 
 {% block body %}
 <style>
@@ -9,34 +8,43 @@
     #answerFormContainer { display : none }
 </style>
 
-<div class="example-wrapper">
-    <h1>{{ advert.title }}! ✅</h1>
-    {%if app.user == advert.userRegister %}
-    <a href="{{path('app_advert_delete', {id : advert.id})}}"><button>Supprimer</button></a>
-    {%endif%}
-</div>
-<div class="example-wrapper">
-    <img src='{{ asset('uploads/images/')~advert.imageFileName }}'/>
-    {{ include('vote/vote.html.twig') }}
-</div>
-<div class="example-wrapper">
-    <a href="/advert"><button>Voir les annonces</button></a>
+<div class="content">
+
+    <div class="left-content">
+
+        <div class="example-wrapper">
+            <h1>{{ advert.title }}! ✅</h1>
+            {%if app.user == advert.userRegister %}
+            <a href="{{path('app_advert_delete', {id : advert.id})}}"><button>Supprimer</button></a>
+            {%endif%}
+        </div>
+        <div class="example-wrapper">
+            <img src='{{ asset('uploads/images/')~advert.imageFileName }}'/>
+            {{ include('vote/vote.html.twig') }}
+        </div>
+        <div class="example-wrapper">
+            <a href="/advert"><button>Voir les annonces</button></a>
+        </div>
+        
+        <div class="example-wrapper">
+            {{ include('question/index.html.twig') }}
+        </div>
+        
+        <div class="example-wrapper" id="answerFormContainer">
+            {{ form(answerForm) }}
+        </div>
+        
+        {%if app.user %}
+        <div class="example-wrapper" >
+            {{ form(questionForm) }}
+           {# {{ include('question/new.html.twig') }} #}
+        </div>
+        {%endif%}
+
+    </div>
+    <div class="right-content"></div>
 </div>
 
-<div class="example-wrapper">
-    {{ include('question/index.html.twig') }}
-</div>
-
-<div class="example-wrapper" id="answerFormContainer">
-    {{ form(answerForm) }}
-</div>
-
-{%if app.user %}
-<div class="example-wrapper" >
-    {{ form(questionForm) }}
-   {# {{ include('question/new.html.twig') }} #}
-</div>
-{%endif%}
 {% endblock %}
 
 {% block javascripts %}

@@ -2,8 +2,14 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛍️</text></svg>">
+        <title>{% block title %}lemauvaiscoin{% endblock %}</title>
+        <meta name="theme-color" content="#F3F3F3"/>
+        <link rel="icon" href="{{asset('favicon.png')}}">
+        <link href="https://api.fontshare.com/v2/css?f[]=clash-display@600&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js" integrity="sha512-gmwBmiTVER57N3jYS3LinA9eb8aHrJua5iQD7yqYCKa5x6Jjc7VDVaEA0je0Lu0bP9j7tEjV3+1qUm6loO99Kw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
@@ -11,13 +17,50 @@
 
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
+
+            <!-- Renders app.js & a webpack runtime.js file
+                <script src="/build/runtime.js" defer></script>
+                <script src="/build/app.js" defer></script>
+                See note below about the "defer" attribute -->
         {% endblock %}
     </head>
     <body>
+        <header>
+            <div class="logo"><a href="/">lemauvaiscoin</a></div>
+            <div class="logo logo-small"><a href="/">lmc</a></div>
+            <div class="header-right">
+
+                    {{ render(controller('App\\Controller\\SearchController::index')) }}
+                {%if app.user %}
+                <form class="publish-advert-form" action="/advert/add">
+                <button type=subimt class="publish-advert">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M6.5 9.5V16H9.5V9.5H16V6.5H9.5V0H6.5V6.5H0V9.5H6.5Z" fill="black"/>
+                    </svg>
+                        
+                   <span>Publier une annonce</span>
+                </button>
+                </form>
+                {%endif%}
+                <button class="user-icon"></button>
+                <div class="user-dropdown">
+                    {%if not app.user %}
+                        <a href="login">Se connecter</a>    
+                        <a href="register">S'inscrire</a>
+                        
+                        {%else%}
+                        {{app.user.userName}}
+                        <a href="{{ path('app_logout') }}">Se déconnecter</a>
+                    {%endif%}
+                </div>
+            </div>
+        </header>
+        <main>
+            {% block body %}
+            {%endblock%}
+        </main>
         <nav>
-            {{ render(controller('App\\Controller\\SearchController::index')) }}
+            
         </nav>
-        {% block body %}
-        {% endblock %}
     </body>
 </html>

@@ -38,6 +38,7 @@ class SearchController extends AbstractController
         }
         return $this->render('home/index.html.twig', [
             'adverts' => $adverts,
+            'query' => $query
             // 'filteredAdverts' => $advert
         ]);
     }

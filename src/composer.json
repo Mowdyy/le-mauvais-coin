@@ -27,7 +27,11 @@
         "symfony/security-bundle": "6.1.*",
         "symfony/security-csrf": "6.1.*",
         "symfony/validator": "6.1.*",
-        "symfony/yaml": "6.1.*"
+        "symfony/webpack-encore-bundle": "^1.16",
+        "symfony/yaml": "6.1.*",
+        "twig/extensions": "^1.5",
+        "twig/extra-bundle": "^3.4",
+        "twig/intl-extra": "^3.4"
     },
     "config": {
         "allow-plugins": {

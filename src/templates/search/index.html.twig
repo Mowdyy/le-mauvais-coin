@@ -1,1 +1,19 @@
-    {{ form(searchForm) }}
+{{ form_start(searchForm) }}
+
+<div class="search-bar">
+    <svg class="black-magnifying-glass" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="8.5" cy="8.5" r="7" stroke="black" stroke-width="3"/>
+        <path d="M15 15L19 19" stroke="black" stroke-width="3" stroke-linecap="square"/>
+    </svg>
+    {{form_widget(searchForm.keyword)}}
+    {{form_widget(searchForm.search)}}
+    {# <button class="search-button">
+        <span>Rechercher</span>
+        <svg class="white-magnifying-glass" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="8.5" cy="8.5" r="7" stroke="white" stroke-width="3"/>
+            <path d="M15 15L19 19" stroke="white" stroke-width="3" stroke-linecap="square"/>
+        </svg>     
+    </button> #}
+</div>
+
+{{ form_end(searchForm) }}
