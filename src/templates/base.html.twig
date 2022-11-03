@@ -3,7 +3,8 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}lemauvaiscoin{% endblock %}</title>
-        <link rel="icon" href="{{asset('build/images/favicon.png')}}">
+        <meta name="theme-color" content="#F3F3F3"/>
+        <link rel="icon" href="{{asset('favicon.png')}}">
         <link href="https://api.fontshare.com/v2/css?f[]=clash-display@600&display=swap" rel="stylesheet">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,6 +43,16 @@
                 </form>
                 {%endif%}
                 <button class="user-icon"></button>
+                <div class="user-dropdown">
+                    {%if not app.user %}
+                        <a href="login">Se connecter</a>    
+                        <a href="register">S'inscrire</a>
+                        
+                        {%else%}
+                        {{app.user.userName}}
+                        <a href="{{ path('app_logout') }}">Se déconnecter</a>
+                    {%endif%}
+                </div>
             </div>
         </header>
         <main>

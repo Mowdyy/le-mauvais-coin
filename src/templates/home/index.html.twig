@@ -5,7 +5,7 @@
 {% endblock %}
 
 
-{% block title %}lemauvaiscoin{% endblock %}
+{% block title %}{%if query is defined%}{{ query }} ({{adverts|length}}) - {%endif%}lemauvaiscoin{% endblock %}
 
 
 {% block body %}
@@ -14,7 +14,7 @@
         <div class="search-recap">
             
             <h1>
-            {%if query is defined%}
+            {%if query is defined and query != ''%}
             Résultats pour "{{ query }}"
             {%else%}
             Toutes les annonces

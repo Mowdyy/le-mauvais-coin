@@ -32,6 +32,24 @@ function raf(time) {
   requestAnimationFrame(raf)
 }
 
-
 requestAnimationFrame(raf)
 
+
+const userDropdown = document.querySelector('.user-dropdown')
+const userIcon = document.querySelector('.user-icon')
+
+function toggleUserDropdown(){
+  if (userDropdown.classList.contains('user-dropdown-active')){
+    userDropdown.classList.remove('user-dropdown-active')
+  } else { 
+    userDropdown.classList.add('user-dropdown-active')
+  }
+}
+
+userIcon.addEventListener('click', toggleUserDropdown)
+window.addEventListener('click', event => {
+  if (event.target != userIcon && event.target != userDropdown && userDropdown.classList.contains('user-dropdown-active')){
+    userDropdown.classList.remove('user-dropdown-active')
+  }
+
+})

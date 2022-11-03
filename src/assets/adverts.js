@@ -8,5 +8,3 @@ gsap.from('.advert',
     ease: "power4"
   }
 })
-
-console.log('hihih');

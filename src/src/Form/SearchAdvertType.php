@@ -19,7 +19,7 @@ class SearchAdvertType extends AbstractType
                 'required' => false,
                 'label' => false,
                 'attr' => array(
-                    'placeholder' => 'Maison en ruines, jean troué...'
+                    'placeholder' => 'Maison en ruines, jean troué...',
                 )
             ])
             ->add('search', SubmitType::class, [
